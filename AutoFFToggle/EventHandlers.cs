@@ -1,25 +1,21 @@
 ﻿using System;
-using EXILED;
-using EXILED.Extensions;
+using Exiled.API.Features;
+using Exiled.Events.EventArgs;
+using Exiled.Events.Extensions;
 
 namespace AutoFFToggle
 {
     public class EventHandlers
-    {
+    { 
         public void onRoundStart()
         {
-            foreach (ReferenceHub hub in Player.GetHubs())
-            {
-                hub.SetFriendlyFire(false);
-            }
+            Server.FriendlyFire = false;           
         }
 
-        public void onRoundEnd()
+        public void onRoundEnd(EndingRoundEventArgs ev)
         {
-            foreach (ReferenceHub hub in Player.GetHubs())
-            {
-                hub.SetFriendlyFire(true);
-            }
+            Server.FriendlyFire = true;
+
         }
     }
 }

@@ -1,14 +1,12 @@
-﻿using static EXILED.Plugin;
+﻿using Exiled.API.Interfaces;
 
 namespace AutoFFToggle
 {
-	public static class Configs
+	public sealed class Configs : IConfig
 	{
-		public static bool PluginOn;
+		
+		public bool IsEnabled { get; set; } = true; 
 
-		internal static void Reload()
-		{
-			PluginOn = Config.GetBool("autofft_on", true);
-		}
+			
 	}
 }

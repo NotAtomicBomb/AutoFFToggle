@@ -1,43 +1,45 @@
 ﻿using System;
-using EXILED;
+using Exiled.API.Features;
+using Exiled.Events;
+using Exiled.API.Extensions;
 
 namespace AutoFFToggle
 {
-    public class AutoFFToggle : EXILED.Plugin
+    public class AutoFFToggle : Plugin<Configs>
     {
         public EventHandlers eh;
-        public override string getName => "AutoFFToggle by Kognity";
+        public override string Name => "AutoFFToggle by Kognity";
 
-        public override void OnDisable()
+        public override void OnDisabled()
         {
-			if (!Configs.PluginOn)
+			if (!Config.IsEnabled)
 			{
 				return;
 			}
 
 
-			Events.WaitingForPlayersEvent -= eh.onRoundStart;
-            Events.RoundEndEvent -= eh.onRoundEnd;
+			Exiled.Events.Handlers.Server.RoundStarted -= eh.onRoundStart;
+           Exiled.Events.Handlers.Server.RoundEnded -= eh.onRoundEnd;
             eh = null;
         }
 
-        public override void OnEnable()
+        public override void OnEnabled()
         {
-			Configs.Reload();
+		
 
-			if (!Configs.PluginOn)
+			if (!Config.IsEnabled)
 			{
 				Log.Info("AutoFFToggle Disabled");
 				return;
 			}
 
 			eh = new EventHandlers();
-            Events.WaitingForPlayersEvent += eh.onRoundStart;
-            Events.RoundEndEvent += eh.onRoundEnd;
-			Log.Info("AutoFFToggle enabled");
+            Exiled.Events.Handlers.Server.RoundStarted += eh.onRoundStart;
+            Exiled.Events.Handlers.Server.EndingRound += eh.onRoundEnd;
+            Log.Info("AutoFFToggle enabled");
 		}
 
-        public override void OnReload()
+        public override void OnReloaded()
         {
             
         }
